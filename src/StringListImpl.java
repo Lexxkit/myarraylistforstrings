@@ -1,5 +1,4 @@
-import exception.ItemNotFoundException;
-import exception.NullParameterException;
+import exception.*;
 
 import java.util.Arrays;
 
@@ -7,6 +6,10 @@ public class StringListImpl implements StringList {
     private String[] storageArray;
 
     private int size;
+
+    public StringListImpl() {
+        storageArray = new String[10];
+    }
 
     public StringListImpl(int arraySize) {
         this.storageArray = new String[arraySize];
@@ -23,9 +26,13 @@ public class StringListImpl implements StringList {
 
     @Override
     public String add(int index, String item) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
+        validateIndex(index);
+        validateItem(item);
+        if (index == size) {
+            storageArray[size++] = item;
+            return item;
         }
+
         System.arraycopy(storageArray, index, storageArray, index + 1, size - index);
         storageArray[index] = item;
         size++;
@@ -34,15 +41,15 @@ public class StringListImpl implements StringList {
 
     @Override
     public String set(int index, String item) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        validateIndex(index);
+        validateItem(item);
         storageArray[index] = item;
         return item;
     }
 
     @Override
     public String remove(String item) {
+        validateItem(item);
         int indexOfItem = indexOf(item);
         if (indexOfItem == -1) {
             throw new ItemNotFoundException();
@@ -56,9 +63,8 @@ public class StringListImpl implements StringList {
 
     @Override
     public String remove(int index) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        validateIndex(index);
+
         String itemToRemove = storageArray[index];
         if (index != storageArray.length - 1) {
             System.arraycopy(storageArray, index + 1, storageArray, index, size - index);
@@ -86,7 +92,7 @@ public class StringListImpl implements StringList {
 
     @Override
     public int lastIndexOf(String item) {
-        for (int i = size; i > 0; i--) {
+        for (int i = size - 1; i > 0; i--) {
             if (storageArray[i].equals(item)) {
                 return i;
             }
@@ -96,9 +102,7 @@ public class StringListImpl implements StringList {
 
     @Override
     public String get(int index) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        validateIndex(index);
         return storageArray[index];
     }
 
@@ -129,5 +133,23 @@ public class StringListImpl implements StringList {
     @Override
     public String[] toArray() {
         return Arrays.copyOf(storageArray, size);
+    }
+
+    private void validateItem(String item) {
+        if (item == null) {
+            throw new NullItemException();
+        }
+    }
+
+    private void validateSize() {
+        if (size == storageArray.length) {
+            throw new StorageIsFullException();
+        }
+    }
+
+    private void validateIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new InvalidIndexException();
+        }
     }
 }
