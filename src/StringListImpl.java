@@ -17,8 +17,9 @@ public class StringListImpl implements StringList {
 
     @Override
     public String add(String item) {
+        validateItem(item);
         if (size >= storageArray.length) {
-            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length * 0.5));
+            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
         }
         storageArray[size++] = item;
         return item;
@@ -31,6 +32,9 @@ public class StringListImpl implements StringList {
         if (index == size) {
             storageArray[size++] = item;
             return item;
+        }
+        if (size >= storageArray.length) {
+            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
         }
 
         System.arraycopy(storageArray, index, storageArray, index + 1, size - index);
@@ -138,12 +142,6 @@ public class StringListImpl implements StringList {
     private void validateItem(String item) {
         if (item == null) {
             throw new NullItemException();
-        }
-    }
-
-    private void validateSize() {
-        if (size == storageArray.length) {
-            throw new StorageIsFullException();
         }
     }
 
