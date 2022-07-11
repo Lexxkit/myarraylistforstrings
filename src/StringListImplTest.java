@@ -101,4 +101,76 @@ class StringListImplTest {
         assertThrows(ItemNotFoundException.class, () -> out.remove(StringListTestConstants.TEST_STRING));
     }
 
+    @Test
+    void shouldRemoveItemByIndexShrinkListAndReturnRemovedItem() {
+        out.add(StringListTestConstants.TEST_STRING);
+        String result = out.remove(StringListTestConstants.INDEX_ZERO);
+
+        assertEquals(0, out.size());
+        assertEquals(StringListTestConstants.TEST_STRING, result);
+    }
+
+    @Test
+    void shouldThrowInvalidIndexExceptionWhenRemoveItemByInvalidIndex() {
+        assertThrows(InvalidIndexException.class, () -> out.remove(StringListTestConstants.INVALID_INDEX));
+    }
+
+    @Test
+    void shouldReturnTrueWhenListContainsItem() {
+        out.add(StringListTestConstants.TEST_STRING);
+        boolean result = out.contains(StringListTestConstants.TEST_STRING);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldReturnFalseWhenListNOTContainsItem() {
+        boolean result = out.contains(StringListTestConstants.TEST_STRING);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldReturnMinusOneWhenSearchForIndexOfItemNotInList() {
+        int result = out.indexOf(StringListTestConstants.TEST_STRING);
+
+        assertEquals(-1, result);
+    }
+
+    @Test
+    void shouldReturnIndexWhenSearchForIndexOfItemInList() {
+        out.add(StringListTestConstants.TEST_STRING);
+        int result = out.indexOf(StringListTestConstants.TEST_STRING);
+
+        assertEquals(StringListTestConstants.INDEX_ZERO, result);
+    }
+
+    @Test
+    void shouldReturnMinusOneWhenSearchForLastIndexOfItemNotInList() {
+        int result = out.lastIndexOf(StringListTestConstants.TEST_STRING);
+
+        assertEquals(-1, result);
+    }
+
+    @Test
+    void shouldReturnIndexWhenSearchForLastIndexOfItemInList() {
+        out.add(StringListTestConstants.TEST_STRING);
+        out.add(StringListTestConstants.TEST_STRING_2);
+        int result = out.lastIndexOf(StringListTestConstants.TEST_STRING_2);
+
+        assertEquals(StringListTestConstants.INDEX_ONE, result);
+    }
+
+    @Test
+    void shouldReturnTrueForEmptyList() {
+        boolean result = out.isEmpty();
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldSetListSizeToZeroWhenClearList() {
+        out.add(StringListTestConstants.TEST_STRING);
+        out.clear();
+        assertEquals(0, out.size());
+    }
 }
