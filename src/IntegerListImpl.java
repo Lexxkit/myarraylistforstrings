@@ -82,12 +82,14 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
-        sortInsertion(storageArray);
         if (isEmpty()) {
             return false;
         }
+        Integer[] storageCopy = toArray();
+        sortInsertion(storageCopy);
 
-        return binarySearch(storageArray, item);
+
+        return binarySearch(storageCopy, item);
     }
 
     @Override
