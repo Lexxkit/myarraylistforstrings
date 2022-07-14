@@ -26,7 +26,7 @@ public interface IntegerList {
     // Вернуть удаленный элемент
     // или исключение, если подобный
     // элемент отсутствует в списке.
-    Integer remove(String item);
+    Integer remove(Integer item);
 
     // Удаление элемента по индексу.
     // Вернуть удаленный элемент

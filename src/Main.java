@@ -26,9 +26,9 @@ public class Main {
 
     public static int[] generateRandomArray() {
         java.util.Random random = new java.util.Random();
-        int[] arr = new int[10000];
+        int[] arr = new int[100000];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(10000);
+            arr[i] = random.nextInt(100000);
         }
         return arr;
     }
