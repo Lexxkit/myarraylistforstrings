@@ -82,9 +82,12 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
-        int indexOf = indexOf(item);
+        sortInsertion(storageArray);
+        if (isEmpty()) {
+            return false;
+        }
 
-        return indexOf >= 0;
+        return binarySearch(storageArray, item);
     }
 
     @Override
@@ -154,5 +157,37 @@ public class IntegerListImpl implements IntegerList {
         }
     }
 
+    private void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int tmp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= tmp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = tmp;
+        }
+    }
 
+    private boolean binarySearch(Integer[] arr, Integer element) {
+        if (arr.length <= 0) {
+            return false;
+        }
+        int min = 0;
+        int max = arr.length - 1;
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (element == arr[mid]) {
+                return true;
+            }
+
+            if (element < arr[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return false;
+    }
 }
