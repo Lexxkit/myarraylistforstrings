@@ -22,10 +22,14 @@ public class IntegerListImpl implements IntegerList {
     public Integer add(Integer item) {
         validateItem(item);
         if (size >= storageArray.length) {
-            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
+            grow();
         }
         storageArray[size++] = item;
         return item;
+    }
+
+    private void grow() {
+        this.storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length / 2 + 1));
     }
 
     @Override
@@ -37,7 +41,7 @@ public class IntegerListImpl implements IntegerList {
             return item;
         }
         if (size >= storageArray.length) {
-            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
+            grow();
         }
 
         System.arraycopy(storageArray, index, storageArray, index + 1, size - index);
