@@ -22,10 +22,14 @@ public class IntegerListImpl implements IntegerList {
     public Integer add(Integer item) {
         validateItem(item);
         if (size >= storageArray.length) {
-            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
+            grow();
         }
         storageArray[size++] = item;
         return item;
+    }
+
+    private void grow() {
+        this.storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length / 2 + 1));
     }
 
     @Override
@@ -37,7 +41,7 @@ public class IntegerListImpl implements IntegerList {
             return item;
         }
         if (size >= storageArray.length) {
-            storageArray = Arrays.copyOf(storageArray, (int) (storageArray.length + storageArray.length * 0.5 + 1));
+            grow();
         }
 
         System.arraycopy(storageArray, index, storageArray, index + 1, size - index);
@@ -86,7 +90,7 @@ public class IntegerListImpl implements IntegerList {
             return false;
         }
         Integer[] storageCopy = toArray();
-        sortInsertion(storageCopy);
+        quickSort(storageCopy, 0, size - 1);
 
 
         return binarySearch(storageCopy, item);
@@ -192,4 +196,36 @@ public class IntegerListImpl implements IntegerList {
         }
         return false;
     }
+
+    private void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+    }
+
+    private int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
+    private void swapElements(Integer[] arr, int left, int right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+
+
 }
